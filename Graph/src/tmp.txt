@@ -1,0 +1,56 @@
+ public static double[] sssp(Graph g, int source) {
+        /* TODO */
+        if (!g.getNodes().isEmpty()){
+            int size = g.getNodes().size();
+
+            for (Node n : g.getNodes()) {
+                if (size < n.getId())
+                    size = n.getId();
+            }
+            size++;
+
+            double [][]distance = new double[size][size];
+
+            for (int i = 0;i < size;i++) {
+                distance[0][i] = Double.POSITIVE_INFINITY;
+            }
+            distance[0][source] = 0;
+
+            System.out.println("Source ist : " + source);
+            for (int i = 0;i < size;i++){
+                System.out.print(distance[0][i] + " ,");
+            }
+            System.out.println();
+
+            for (int i = 1;i < distance.length;i++){
+                for (Node j : g.getNodes()){
+                    if (j.getId() != source) {
+                        System.out.print("(");
+                        distance[i][j.getId()] = distance[i - 1][j.getId()];
+                        for (Edge k : j.getAdjList()) {
+                            System.out.print(k.getDst() + ", ");
+                            distance[i][j.getId()] = Math.min(distance[i][j.getId()], distance[i - 1][k.getDst().getId()] + k.getWeight());
+                        }
+                        /*
+                        for (int k = 0; k < list.size(); k++) {
+                            id_dst = list.get(k).getDst().getId();
+                            System.out.print(id_dst + ", ");
+                            distance[i][j] = Math.min(distance[i][j], distance[i - 1][id_dst] + g.getCost(j,id_dst));
+                        }
+                        */
+                        System.out.print(") \n");
+                    }
+                    //else
+                       // distance[i][j.getId()] = 0;
+                }
+
+                for (int c = 0;c < size;c++){
+                    System.out.print(distance[i][c] + " ,");
+                }
+                System.out.println();
+
+            }
+            return distance[size - 2];
+        }
+        throw new UnsupportedOperationException("Aufgabe 12.1 noch nicht bearbeitet!");
+    }
